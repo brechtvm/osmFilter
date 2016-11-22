@@ -1,0 +1,130 @@
+{
+	"ImportPath": "bitbucket.org/be-mobile/osmFilter",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/brechtvm/osm",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/bbox",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/distance",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/item",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/node",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/pbf",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/point",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/relation",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/tags",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/user",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/brechtvm/osm/way",
+			"Rev": "483d0acc578f50f8ae1b4e12cd8617a60290680d"
+		},
+		{
+			"ImportPath": "github.com/golang/geo/r1",
+			"Rev": "ceb4637fdec99c4ec755429170dd0e9e2cd70604"
+		},
+		{
+			"ImportPath": "github.com/golang/geo/r2",
+			"Rev": "ceb4637fdec99c4ec755429170dd0e9e2cd70604"
+		},
+		{
+			"ImportPath": "github.com/golang/geo/r3",
+			"Rev": "ceb4637fdec99c4ec755429170dd0e9e2cd70604"
+		},
+		{
+			"ImportPath": "github.com/golang/geo/s1",
+			"Rev": "ceb4637fdec99c4ec755429170dd0e9e2cd70604"
+		},
+		{
+			"ImportPath": "github.com/golang/geo/s2",
+			"Rev": "ceb4637fdec99c4ec755429170dd0e9e2cd70604"
+		},
+		{
+			"ImportPath": "github.com/golang/protobuf/proto",
+			"Rev": "1f49d83d9aa00e6ce4fc8258c71cc7786aec968a"
+		},
+		{
+			"ImportPath": "github.com/qedus/osmpbf",
+			"Rev": "dd8b94fbc7b435865538fca3850fd41a3070d02b"
+		},
+		{
+			"ImportPath": "github.com/qedus/osmpbf/OSMPBF",
+			"Rev": "dd8b94fbc7b435865538fca3850fd41a3070d02b"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/bbox",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/distance",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/item",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/node",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/point",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/relation",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/tags",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/user",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/way",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		},
+		{
+			"ImportPath": "github.com/vetinari/osm/xml",
+			"Rev": "c9a084b0cba2cd522a4d8cca6e6801ea5a36e07e"
+		}
+	]
+}

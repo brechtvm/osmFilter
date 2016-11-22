@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
-	//"github.com/paulsmith/gogeos/geos"
-	"github.com/vetinari/osm"
-	"github.com/vetinari/osm/pbf"
-	//"github.com/vetinari/osm/xml"
 	"encoding/csv"
 	"flag"
+	"fmt"
+	"github.com/brechtvm/osm"
+	"github.com/brechtvm/osm/node"
+	"github.com/brechtvm/osm/pbf"
+	"github.com/brechtvm/osm/relation"
+	"github.com/brechtvm/osm/way"
 	s2 "github.com/golang/geo/s2"
-	"github.com/vetinari/osm/node"
-	"github.com/vetinari/osm/relation"
-	"github.com/vetinari/osm/way"
 	"io"
 	"log"
 	"os"
@@ -24,15 +22,6 @@ var cellUnionFile string
 
 func main() {
 	parseFlags()
-	/*
-		strInput := "LINESTRING (0 0, 10 10, 20 20)"
-		line, _ := geos.FromWKT(strInput)
-		lineBuf, _ := line.Buffer(2.5)
-		strLineBuf, _ := lineBuf.ToWKT()
-		fmt.Sprintf("The buffered geom is %s", strLineBuf)
-		log.Println(buf)
-	*/
-	// Output: POLYGON ((18.2322330470336311 21.7677669529663689, 18.61…
 	log.Println("Reading osm file")
 	osmFile := readOSMPbf(inputFile)
 	log.Println("OsmFile Read")
@@ -43,15 +32,6 @@ func main() {
 	osmExtract := extractByCellUnion(osmFile, cellUnion)
 	log.Println("Done extracting OSM data")
 	writeOsm(osmExtract.String(), "extract.osm")
-	//log.Println(osmExtract.String())
-
-	// INTERESSANT --> osmExtract.FilterTags()
-
-	//generateS2cells(ways)
-	//s2ways := generateS2cells(ways)
-	//wayS2CellGenerator()
-	//readWays
-	//getWayID
 }
 
 func parseFlags() {
@@ -73,12 +53,6 @@ func parseFlags() {
 }
 
 func readOSMPbf(path string) *osm.OSM {
-	/*
-		if len(os.Args) != 2 {
-			fmt.Fprintf(os.Stderr, "%s: Usage: %s PBF_FILE\n", os.Args[0], os.Args[0])
-			os.Exit(1)
-		}
-	*/
 	fh, err := os.Open(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: failed to open %s: %s\n", os.Args[0], os.Args[1], err)
@@ -106,7 +80,6 @@ func readCellUnion(path string) s2.CellUnion {
 	reader := csv.NewReader(file)
 	reader.Comma = ';'
 	lineCount := 0
-	//reader.Read() // Skip Header
 	for {
 		// read just one record, but we could ReadAll() as well
 		record, err := reader.Read()
@@ -138,13 +111,6 @@ func extractByCellUnion(osmFile *osm.OSM, cu s2.CellUnion) osm.OSM {
 	relationsExtract := make(map[int64]*relation.Relation)
 	log.Printf("CellUnion #%d \n", len(cu))
 
-	var regionCoverer s2.RegionCoverer
-	regionCoverer.MaxCells = 10000
-	regionCoverer.MinLevel = 17 // ~50m segment length
-	regionCoverer.MaxLevel = 17 // ~50m segment length
-	cuRect := cu.RectBound()
-	cuCells := regionCoverer.Covering(cuRect) // get cells covered at level17
-
 	fmt.Println("Processing ways...")
 	for _, way := range *ways {
 		//add := false
@@ -154,20 +120,11 @@ func extractByCellUnion(osmFile *osm.OSM, cu s2.CellUnion) osm.OSM {
 			lng := node.Position().Lon
 			s2LatLng := s2.LatLngFromDegrees(lat, lng)
 			s2PointCellID := s2.CellIDFromLatLng(s2LatLng)
-			//log.Printf("[%f,%f] - %v - #%s \n", lat, lng, s2LatLng, s2PointCellID.ToToken())
-
-			if cuCells.IntersectsCellID(s2PointCellID) {
+			if cu.IntersectsCellID(s2PointCellID) {
 				wayID := way.Id()
-				// if wayID == 299131213 {
-				// 	fmt.Printf("%v \n", osmFile.GetWay(wayID))
-				// }
 				waysExtract[wayID] = osmFile.GetWay(wayID)
 				for _, wayNode := range way.GetNodes() {
-					// if wayID == 299131213 {
-					// 	fmt.Printf("%v \n", osmFile.GetNode(wayNode.Id()))
-					// }
 					nodesExtract[wayNode.Id()] = osmFile.GetNode(wayNode.Id())
-					//fmt.Printf("Added way #%d - with nodes %v \n", way.Id(), way.GetNodes())
 				}
 				break
 			}
@@ -185,41 +142,6 @@ func extractByCellUnion(osmFile *osm.OSM, cu s2.CellUnion) osm.OSM {
 			}
 		}
 	}
-
-	/*
-		for _, node := range nodes {
-			// Generate s2cell for Node
-			lat := node.Position().Lat
-			lng := node.Position().Lon
-			s2LatLng := s2.LatLngFromDegrees(lat, lng)
-			s2PointCellID := s2.CellIDFromLatLng(s2LatLng)
-		}
-	*/
-	/*
-		for _, way := range *ways {
-
-			nodes := way.GetNodes()
-			for _, node := range nodes {
-				// Generate s2cell for Node
-				lat := node.Position().Lat
-				lng := node.Position().Lon
-				s2LatLng := s2.LatLngFromDegrees(lat, lng)
-				s2PointCellID := s2.CellIDFromLatLng(s2LatLng)
-				//log.Printf("[%f,%f] - %v - #%s \n", lat, lng, s2LatLng, s2PointCellID.ToToken())
-
-				// check if CellUnion contains nodeCell
-				if cu.IntersectsCellID(s2PointCellID) {
-					add = true
-					break
-				}
-			}
-
-		}
-		for _, relation := range *relations {
-			relationWays := relation.GetWays()
-
-		}
-	*/
 	osmExtract.Ways = waysExtract
 	osmExtract.Nodes = nodesExtract
 	osmExtract.Relations = relationsExtract
@@ -241,28 +163,3 @@ func check(e error) {
 		panic(e)
 	}
 }
-
-/*
-	var regionCoverer s2.RegionCoverer
-
-	regionCoverer.MaxCells = 10000
-	regionCoverer.MinLevel = 7
-	regionCoverer.MaxLevel = 15
-
-	rect := loop.RectBound()
-	if loop.NumEdges() == 74767 { // damn you Canada!
-		log.Printf("Canada has always been a special one...")
-		topleft := s2.LatLngFromDegrees(72.0000064, -141.0000000)
-		topright := s2.LatLngFromDegrees(72.0000064, -55.6152420)
-		bottomleft := s2.LatLngFromDegrees(41.9017143-10.0, -141.0000000)
-		bottomright := s2.LatLngFromDegrees(41.9017143-10.0, -55.6152420)
-
-		rect = s2.Rect{}
-		rect = rect.AddPoint(bottomleft)
-		rect = rect.AddPoint(bottomright)
-		rect = rect.AddPoint(topright)
-		rect = rect.AddPoint(topleft)
-	}
-
-	covering := regionCoverer.Covering(s2.Region(rect))
-*/
